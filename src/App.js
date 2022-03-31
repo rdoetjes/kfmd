@@ -39,21 +39,21 @@ function AppHeader() {
       <div className='grid'>
         <div className='section'></div>
         <div className='section'>
-        <Topic topic="KILL" image="kill.png" disabled={isDisabled} onClick={() => {playMe("gunshot.mp3", celebs, alreadyHad)}}/>
+          <Topic topic="KILL" image="kill.png" disabled={isDisabled} onClick={() => {playMe("gunshot.mp3", celebs, alreadyHad)}}/>
         </div>
         <div className='section'></div>
 
         <div className='section'>
-        <Topic topic="FUCK!" image="fuck.png" disabled={isDisabled} onClick={() => {playMe("orgasm.mp3", celebs, alreadyHad)}}/>
+          <Topic topic="FUCK!" image="fuck.png" disabled={isDisabled} onClick={() => {playMe("orgasm.mp3", celebs, alreadyHad)}}/>
         </div>
         <div className='section'><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + "/celebs/" + newCeleb} /> </div>
         <div className='section'>
-        <Topic topic="MARRY" image="marry.png" disabled={isDisabled} onClick={() => {playMe("sucker.mp3", celebs, alreadyHad)}} />
+          <Topic topic="MARRY" image="marry.png" disabled={isDisabled} onClick={() => {playMe("sucker.mp3", celebs, alreadyHad)}} />
         </div>
 
         <div className='section'></div>
         <div className='section'>
-        <Topic topic="DUMP" image="dump.png" disabled={isDisabled} onClick={() => {playMe("dumped.mp3", celebs, alreadyHad)}}/>
+          <Topic topic="DUMP" image="dump.png" disabled={isDisabled} onClick={() => {playMe("dumped.mp3", celebs, alreadyHad)}}/>
         </div>
         <div className='section'></div>
       </div>
