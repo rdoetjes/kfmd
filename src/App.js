@@ -6,7 +6,7 @@ import {idiots} from './idiots.js'
 function AppHeader() {
   const [newIdiot, setNewIdiot] = useState(getIdiot())
 
-  function getIdiot(){
+  function getIdiot() {
     let tempIdiot = idiots[Math.floor(Math.random() * idiots.length)]
     while (tempIdiot==newIdiot)
       tempIdiot = idiots[Math.floor(Math.random() * idiots.length)]
