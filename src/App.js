@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import Topic from './Topic.js'
 
-function App() {
+function AppHeader() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='KFMD'>
+      <div className='grid'>
+        <div className='section'></div>
+        <div className='section'>
+        <Topic topic="KILL" image="kill.png" />
+        </div>
+        <div className='section'></div>
+
+        <div className='section'>
+        <Topic topic="FUCK!" image="fuck.png" />
+        </div>
+        <div className='section'><img className="box" alt="kill" src={process.env.PUBLIC_URL + '/trudeau.webp'} /> </div>
+        <div className='section'>
+        <Topic topic="MARRY" image="marry.png"/>
+        </div>
+
+        <div className='section'></div>
+        <div className='section'>
+        <Topic topic="DUMP" image="dump.png" />
+        </div>
+        <div className='section'></div>
+      </div>
+    
     </div>
   );
 }
 
-export default App;
+export default AppHeader;
