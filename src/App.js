@@ -9,7 +9,7 @@ function AppHeader() {
   const [alreadyHad, addIdiot] = useState([])
   const [isDisabled, setDisabled] = useState(false)
 
-  function getIdiot() {  
+  function getIdiot(alreadyHad, idiots) {  
     if (alreadyHad && !alreadyHad.includes(newIdiot))
       addIdiot(alreadyHad => [...alreadyHad, newIdiot])
  
@@ -31,7 +31,7 @@ function AppHeader() {
   const playMe = (soundFile, idiots, alreadyHad) =>{
     let sound = new Audio(process.env.PUBLIC_URL + '/' +soundFile);
     sound.play();
-    setNewIdiot(getIdiot())
+    setNewIdiot(getIdiot(alreadyHad, idiots))
   }
 
   return (
