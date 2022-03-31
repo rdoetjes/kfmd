@@ -7,6 +7,7 @@ function AppHeader() {
   
   const [newIdiot, setNewIdiot] = useState(idiots[Math.floor(Math.random() * idiots.length)])
   const [alreadyHad, addIdiot] = useState([])
+  const [isDisabled, setDisabled] = useState(false)
 
   function getIdiot() {  
     if (alreadyHad && !alreadyHad.includes(newIdiot))
@@ -14,8 +15,10 @@ function AppHeader() {
  
     let tempIdiot = idiots[Math.floor(Math.random() * idiots.length)]
     
-    if (alreadyHad && alreadyHad.length >= idiots.length)
+    if (alreadyHad && alreadyHad.length >= idiots.length){
+      setDisabled(true)
       return "done.jpeg"
+    }
 
     while (alreadyHad && alreadyHad.includes(tempIdiot))
       tempIdiot = idiots[Math.floor(Math.random() * idiots.length)]
@@ -36,21 +39,21 @@ function AppHeader() {
       <div className='grid'>
         <div className='section'></div>
         <div className='section'>
-        <Topic topic="KILL" image="kill.png" onClick={() => {playMe("gunshot.mp3", idiots, alreadyHad)}}/>
+        <Topic topic="KILL" image="kill.png" disabled={isDisabled} onClick={() => {playMe("gunshot.mp3", idiots, alreadyHad)}}/>
         </div>
         <div className='section'></div>
 
         <div className='section'>
-        <Topic topic="FUCK!" image="fuck.png" onClick={() => {playMe("orgasm.mp3", idiots, alreadyHad)}}/>
+        <Topic topic="FUCK!" image="fuck.png" disabled={isDisabled} onClick={() => {playMe("orgasm.mp3", idiots, alreadyHad)}}/>
         </div>
         <div className='section'><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + "/idiots/" + newIdiot} /> </div>
         <div className='section'>
-        <Topic topic="MARRY" image="marry.png" onClick={() => {playMe("sucker.mp3", idiots, alreadyHad)}} />
+        <Topic topic="MARRY" image="marry.png" disabled={isDisabled} onClick={() => {playMe("sucker.mp3", idiots, alreadyHad)}} />
         </div>
 
         <div className='section'></div>
         <div className='section'>
-        <Topic topic="DUMP" image="dump.png" onClick={() => {playMe("dumped.mp3", idiots, alreadyHad)}}/>
+        <Topic topic="DUMP" image="dump.png" disabled={isDisabled} onClick={() => {playMe("dumped.mp3", idiots, alreadyHad)}}/>
         </div>
         <div className='section'></div>
       </div>
