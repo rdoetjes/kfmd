@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import './App.css';
 import Topic from './Topic.js'
+import {idiots} from './idiots.js'
 
 function AppHeader() {
-  const idiots = ['rutte.jpeg', 'trudeau.webp', 'kurt.jpeg', 'schwab.jpeg']
   const [newIdiot, setNewIdiot] = useState(getIdiot())
 
   function getIdiot(){
