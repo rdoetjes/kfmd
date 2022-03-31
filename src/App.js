@@ -3,11 +3,14 @@ import './App.css';
 import Topic from './Topic.js'
 
 function AppHeader() {
-  const idiots = ['/idiots/rutte.jpeg', '/idiots/trudeau.webp', '/idiots/kurt.jpeg', '/idiots/schwab.jpeg']
+  const idiots = ['rutte.jpeg', 'trudeau.webp', 'kurt.jpeg', 'schwab.jpeg']
   const [newIdiot, setNewIdiot] = useState(getIdiot())
 
   function getIdiot(){
-    return idiots[Math.floor(Math.random() * idiots.length)]
+    let tempIdiot = idiots[Math.floor(Math.random() * idiots.length)]
+    while (tempIdiot==newIdiot)
+      tempIdiot = idiots[Math.floor(Math.random() * idiots.length)]
+    return tempIdiot
   }
 
   const playMe = (soundFile) =>{
@@ -28,7 +31,7 @@ function AppHeader() {
         <div className='section'>
         <Topic topic="FUCK!" image="fuck.png" onClick={() => {playMe("orgasm.mp3")}}/>
         </div>
-        <div className='section'><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + newIdiot} /> </div>
+        <div className='section'><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + "/idiots/" + newIdiot} /> </div>
         <div className='section'>
         <Topic topic="MARRY" image="marry.png" onClick={() => {playMe("sucker.mp3")}} />
         </div>
