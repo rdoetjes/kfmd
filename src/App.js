@@ -3,16 +3,16 @@ import './App.css';
 import Topic from './Topic.js'
 import {celebs} from './celebs.js'
 import mqtt from 'mqtt'
-import { toHaveFocus } from '@testing-library/jest-dom/dist/matchers';
 
-class AppHeader extends Component {
+class App extends Component {
   
   constructor(props){
     super(props);
     this.state = {
       newCeleb: celebs[Math.floor(Math.random() * celebs.length)],
       alreadyHad: [],
-      isDisabled: false
+      isDisabled: false,
+      connection: "DISCONNECTED"
     }
   }
 
@@ -21,13 +21,19 @@ class AppHeader extends Component {
     this.client = mqtt.connect("ws://192.168.178.77:9001");
 
     this.client.on("connect", ()   => {
-      console.log("connected");
+      this.setState({connection: "CONNECTED"});
       this.client.subscribe("kfmd_pub");
+      this.setState({connection: "READY"});
     });
 
     this.client.on("message", (topic, message) => {
       this.callEvent(message.toString())
     });
+  }
+
+  componentWillUnmount(){
+    this.setState({connection: "DISCONNECTED"});
+    this.client.end();
   }
 
   kill(){
@@ -47,9 +53,10 @@ class AppHeader extends Component {
   }
 
   callEvent(brokerMessage){
-    if (this.state.isDisabled)
+    if (this.state.isDisabled){
+      this.setState({connection: "GAME OVER"})
       return;
-    
+    }
     var message= brokerMessage.toUpperCase();
 
     if (message === "UP" || message ==="U" || message === "K" || message === "KILL")
@@ -75,6 +82,7 @@ class AppHeader extends Component {
     
     if (this.state.alreadyHad && this.state.alreadyHad.length >= celebs.length){
       this.setState({isDisabled: true});
+      this.setState({connection: "GAME OVER"});
       return "done.jpeg"
     }
 
@@ -117,11 +125,11 @@ class AppHeader extends Component {
             <Topic topic="DUMP" image="dump.png" disabled={this.state.isDisabled} onClick={() => {this.dump()}}/>
           </div>
           <div className='section'></div>
+          <div>STATUS: {this.state.connection}</div>
         </div>
-      
       </div>
     );
   }
 }
 
-export default AppHeader;
+export default App;
