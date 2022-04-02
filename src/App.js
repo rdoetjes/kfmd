@@ -4,9 +4,9 @@ import Topic from './Topic.js'
 import {celebs} from './celebs.js'
 import mqtt from 'mqtt'
 import { toHaveFocus } from '@testing-library/jest-dom/dist/matchers';
+
 class AppHeader extends Component {
   
-
   constructor(props){
     super(props);
     this.state = {
