@@ -12,7 +12,7 @@ class App extends Component {
       newCeleb: celebs[Math.floor(Math.random() * celebs.length)],
       alreadyHad: [],
       isDisabled: false,
-      connection: "DISCONNECTED"
+      statusBar: "DISCONNECTED"
     }
   }
 
@@ -21,9 +21,9 @@ class App extends Component {
     this.client = mqtt.connect("ws://192.168.178.77:9001");
 
     this.client.on("connect", ()   => {
-      this.setState({connection: "CONNECTED"});
+      this.setState({statusBar: "CONNECTED"});
       this.client.subscribe("kfmd_pub");
-      this.setState({connection: "READY"});
+      this.setState({statusBar: "READY"});
     });
 
     this.client.on("message", (topic, message) => {
@@ -32,7 +32,7 @@ class App extends Component {
   }
 
   componentWillUnmount(){
-    this.setState({connection: "DISCONNECTED"});
+    this.setState({statusBar: "DISCONNECTED"});
     this.client.end();
   }
 
@@ -54,7 +54,7 @@ class App extends Component {
 
   callEvent(brokerMessage){
     if (this.state.isDisabled){
-      this.setState({connection: "GAME OVER"})
+      this.setState({statusBar: "GAME OVER"})
       return;
     }
     var message= brokerMessage.toUpperCase();
@@ -82,7 +82,7 @@ class App extends Component {
     
     if (this.state.alreadyHad && this.state.alreadyHad.length >= celebs.length){
       this.setState({isDisabled: true});
-      this.setState({connection: "GAME OVER"});
+      this.setState({statusBar: "GAME OVER"});
       return "done.jpeg"
     }
 
@@ -125,7 +125,7 @@ class App extends Component {
             <Topic topic="DUMP" image="dump.png" disabled={this.state.isDisabled} onClick={() => {this.dump()}}/>
           </div>
           <div className='section'></div>
-          <div>STATUS: {this.state.connection}</div>
+          <div>STATUS: {this.state.statusBar}</div>
         </div>
       </div>
     );
