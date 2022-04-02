@@ -5,15 +5,16 @@ import {celebs} from './celebs.js'
 import mqtt from 'mqtt'
 
 class App extends Component {
-  
+
   constructor(props){
     super(props);
     this.state = {
       newCeleb: celebs[Math.floor(Math.random() * celebs.length)],
       alreadyHad: [],
       isDisabled: false,
-      statusBar: "DISCONNECTED"
-    }
+      statusBar: "DISCONNECTED",
+      animate: "none"
+    }    
   }
 
   componentDidMount(){
@@ -27,14 +28,12 @@ class App extends Component {
     this.client = mqtt.connect("ws://192.168.178.77:9001", options);
 
     this.client.on("connect", ()   => {
-      console.log("CONNECTED");
       this.setState({statusBar: "CONNECTED"});
       this.client.subscribe("kfmd_pub");
       this.setState({statusBar: "READY"});
     });
 
     this.client.on("message", (topic, message) => {
-      console.log(message.toString());
       this.callEvent(message.toString());
     });
   }
@@ -45,19 +44,28 @@ class App extends Component {
   }
 
   kill(){
+    this.setState({animate: "up"});
     this.playMe("gunshot.mp3", celebs, this.state.alreadyHad);
+    setTimeout(() => this.setState({animate: "none"}), 2000);
   }
 
   fuck(){
-    this.playMe("orgasm.mp3", celebs, this.state.alreadyHad)
+    this.setState({animate: "left"});
+    this.playMe("orgasm.mp3", celebs, this.state.alreadyHad);
+    setTimeout(() => this.setState({animate: "none"}), 2000);
+
   }
 
   dump(){
+    this.setState({animate: "down"});
     this.playMe("dumped.mp3", celebs, this.state.alreadyHad);
+    setTimeout(() => this.setState({animate: "none"}), 2000);
   }
 
   marry(){
+    this.setState({animate: "right"});
     this.playMe("sucker.mp3", celebs, this.state.alreadyHad);
+    setTimeout(() => this.setState({animate: "none"}), 2000);
   }
 
   callEvent(brokerMessage){
@@ -65,22 +73,22 @@ class App extends Component {
       this.setState({statusBar: "GAME OVER"})
       return;
     }
+
     var message= brokerMessage.toUpperCase();
 
     if (message === "UP" || message ==="U" || message === "K" || message === "KILL")
       this.kill();
 
-    if (message === "DOWN" || message ==="D" || message === "DUMP")
-     this.dump();
+    if (message === "DOWN" || message ==="D" || message === "DUMP"){
+      this.dump();
+    }
     
     if (message === "LEFT" || message ==="L" || message === "F" || message === "FUCK")
       this.fuck();
     
     if (message === "RIGHT" || message ==="R" || message === "M" || message === "MARRY")
     this.marry()
-
-    console.log(message.toString());
-  }
+  } 
 
   getCeleb(celebs) {  
     if (this.state.alreadyHad && !this.state.alreadyHad.includes(this.state.newCeleb))
@@ -98,7 +106,6 @@ class App extends Component {
       tempCeleb = celebs[Math.floor(Math.random() * celebs.length)]
     
     this.state.alreadyHad.push(tempCeleb);
-
     return tempCeleb
   }
 
@@ -110,7 +117,7 @@ class App extends Component {
     this.setState({newCeleb: tempCeleb});
   }
 
-  render(){
+  render(){    
   return (
       <div className='KFMD'>
         <div className='grid'>
@@ -123,7 +130,7 @@ class App extends Component {
           <div className='section'>
             <Topic topic="FUCK!" image="fuck.png" disabled={this.state.isDisabled} onClick={() => {this.fuck()}}/>
           </div>
-          <div className='section'><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + "/celebs/" + this.state.newCeleb} /> </div>
+          <div className='section' id={this.state.animate}><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + "/celebs/" + this.state.newCeleb} /> </div>
           <div className='section'>
             <Topic topic="MARRY" image="marry.png" disabled={this.state.isDisabled} onClick={() => {this.marry()}} />
           </div>

@@ -68,3 +68,62 @@ button:hover {
   background-color:rgb(248, 127, 248);
   transition: 0.7s;
 }
+
+#down {
+    position: relative;
+    -webkit-animation: moveDown 2s infinite  normal ease-out;
+    animation: moveDown 2s infinite normal ease-out;
+}
+@keyframes moveDown {
+    0% {
+        top: 0px;
+    }
+    100% {
+        top: 0200px;
+    }
+}
+
+#up {
+  position: relative;
+  -webkit-animation: moveUp 2s infinite  normal ease-out;
+  animation: moveUp 2s infinite normal ease-out;
+}
+
+@keyframes moveUp {
+  0% {
+      bottom: 0px;
+  }
+  100% {
+      bottom: 0200px;
+  }
+}
+
+#left {
+  position: relative;
+  -webkit-animation: moveLeft 2s infinite  normal ease-out;
+  animation: moveLeft 2s infinite normal ease-out;
+}
+
+@keyframes moveLeft {
+  0% {
+      right: 0px;
+  }
+  100% {
+      right: 0200px;
+  }
+}
+
+#right {
+  position: relative;
+  -webkit-animation: moveRight 2s infinite  normal ease-out;
+  animation: moveRight 2s infinite normal ease-out;
+}
+
+@keyframes moveRight {
+  0% {
+      left: 0px;
+  }
+  100% {
+      left: 0200px;
+  }
+}
