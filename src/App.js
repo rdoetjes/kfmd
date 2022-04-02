@@ -17,17 +17,25 @@ class App extends Component {
   }
 
   componentDidMount(){
+    const options = {
+      clientId: 'phonax',
+      username: 'phonax',
+      password: 'Phonax01'
+    }
+
     //todo make a wss (ssl)
-    this.client = mqtt.connect("ws://192.168.178.77:9001");
+    this.client = mqtt.connect("ws://192.168.178.77:9001", options);
 
     this.client.on("connect", ()   => {
+      console.log("CONNECTED");
       this.setState({statusBar: "CONNECTED"});
       this.client.subscribe("kfmd_pub");
       this.setState({statusBar: "READY"});
     });
 
     this.client.on("message", (topic, message) => {
-      this.callEvent(message.toString())
+      console.log(message.toString());
+      this.callEvent(message.toString());
     });
   }
 
