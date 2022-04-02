@@ -78,9 +78,12 @@ button:hover {
     0% {
         top: 0px;
     }
-    100% {
+    50% {
         top: 0200px;
     }
+    100% {
+      top: 0;
+  }
 }
 
 #up {
@@ -93,9 +96,12 @@ button:hover {
   0% {
       bottom: 0px;
   }
-  100% {
+  50% {
       bottom: 0200px;
   }
+  100% {
+    bottom: 0;
+}
 }
 
 #left {
@@ -108,9 +114,12 @@ button:hover {
   0% {
       right: 0px;
   }
-  100% {
+  50% {
       right: 0200px;
   }
+  100% {
+    right: 0;
+}
 }
 
 #right {
@@ -123,7 +132,10 @@ button:hover {
   0% {
       left: 0px;
   }
-  100% {
+  50% {
       left: 0200px;
   }
+  100% {
+    left: 0px;
+}
 }
