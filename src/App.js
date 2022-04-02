@@ -16,7 +16,16 @@ class AppHeader extends Component {
   }
 
   componentDidMount(){
+    this.client = mqtt.connect("wss://test.mosquitto.org:8081");
 
+    this.client.on("connect", ()   => {
+      console.log("connected");
+      this.client.subscribe("kfmd_pub");
+    });
+
+    this.client.on("message", (topic, message) => {
+      console.log(message.toString());
+    });
   }
 
   getCeleb(celebs) {  
