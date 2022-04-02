@@ -46,26 +46,31 @@ class App extends Component {
   kill(){
     this.setState({animate: "up"});
     this.playMe("gunshot.mp3", celebs, this.state.alreadyHad);
-    setTimeout(() => this.setState({animate: "none"}), 2000);
+    setTimeout(() => this.getNewCelebAfterMove(), 2000);
   }
 
   fuck(){
     this.setState({animate: "left"});
     this.playMe("orgasm.mp3", celebs, this.state.alreadyHad);
-    setTimeout(() => this.setState({animate: "none"}), 2000);
-
+    setTimeout(() => this.getNewCelebAfterMove(), 2000);
   }
 
   dump(){
     this.setState({animate: "down"});
     this.playMe("dumped.mp3", celebs, this.state.alreadyHad);
-    setTimeout(() => this.setState({animate: "none"}), 2000);
+    setTimeout(() => this.getNewCelebAfterMove(), 2000);
   }
 
   marry(){
     this.setState({animate: "right"});
     this.playMe("sucker.mp3", celebs, this.state.alreadyHad);
-    setTimeout(() => this.setState({animate: "none"}), 2000);
+    setTimeout(() => this.getNewCelebAfterMove(), 2000);  
+  }
+
+  getNewCelebAfterMove(){
+    this.setState({animate: "none"});
+    let tempCeleb = this.getCeleb(celebs, this.state.alreadyHad);
+    this.setState({newCeleb: tempCeleb}); 
   }
 
   callEvent(brokerMessage){
@@ -113,8 +118,8 @@ class App extends Component {
     let sound = new Audio(process.env.PUBLIC_URL + '/' +soundFile);
     sound.muted = false;
     sound.play();
-    let tempCeleb = this.getCeleb(celebs, alreadyHad);
-    this.setState({newCeleb: tempCeleb});
+    //let tempCeleb = this.getCeleb(celebs, alreadyHad);
+    //this.setState({newCeleb: tempCeleb});
   }
 
   render(){    
