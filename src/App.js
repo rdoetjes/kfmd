@@ -1,4 +1,4 @@
-import React, {Component, setState} from 'react'
+import React, {Component} from 'react'
 import './App.css';
 import Topic from './Topic.js'
 import {celebs} from './celebs.js'
