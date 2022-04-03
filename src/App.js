@@ -20,6 +20,7 @@ class App extends Component {
   }
 
   componentDidMount(){
+    //credentials for the broker, I disabled anonymous connect
     const options = {
       clientId: 'phonax',
       username: 'phonax',
