@@ -156,7 +156,7 @@ class App extends Component {
           <div className='section'>
             <Topic topic="FUCK!" image="fuck.png" disabled={this.state.isDisabled} onClick={() => {this.performAction("FUCK")}}/>
           </div>
-          <div className='section' id={this.state.animate}><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + "/celebs/" + this.state.newCeleb} /> </div>
+          <div className='section'><img id={this.state.animate} className="box" alt="kill" src={process.env.PUBLIC_URL + "/celebs/" + this.state.newCeleb} /> </div>
           <div className='section'>
             <Topic topic="MARRY" image="marry.png" disabled={this.state.isDisabled} onClick={() => {this.performAction("MARRY")}} />
           </div>
