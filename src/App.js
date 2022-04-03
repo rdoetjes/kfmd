@@ -13,6 +13,7 @@ class App extends Component {
       newCeleb: celebs[Math.floor(Math.random() * celebs.length)],
       alreadyHad: [],
       isDisabled: false,
+      isGameOver: false,
       statusBar: "DISCONNECTED",
       animate: "none"
     }
@@ -49,6 +50,10 @@ class App extends Component {
 
   //What action to perfotm with this celeb.
   performAction(Action){
+
+    //you cannot click any buttons during animation
+    this.setState({isDisabled: true});
+
     switch(Action.toUpperCase()){
 
       case "KILL":
@@ -80,15 +85,19 @@ class App extends Component {
   getNewCelebAfterMove(){
     this.setState({animate: "none"});
     let tempCeleb = this.getCeleb(celebs, this.state.alreadyHad);
-    this.setState({newCeleb: tempCeleb}); 
+    this.setState({newCeleb: tempCeleb});
   }
 
   //Event handling from the broker message
   callEvent(brokerMessage){
-    if (this.state.isDisabled){
+    if (this.state.isGameOver){
       this.setState({statusBar: "GAME OVER"})
       return;
     }
+
+    //cannot handle evens when  buttons are disabled.
+    if (this.state.isDisabled)
+      return;
 
     var message= brokerMessage.toUpperCase();
 
@@ -122,6 +131,7 @@ class App extends Component {
       tempCeleb = celebs[Math.floor(Math.random() * celebs.length)]
     
     this.state.alreadyHad.push(tempCeleb);
+    this.setState({isDisabled: false});
     return tempCeleb
   }
 
