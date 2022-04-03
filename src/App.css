@@ -32,8 +32,8 @@
 }
 
 .box {
-  height: 400px;
-  width: 400px;
+  height: 4em;
+  width: 4em;
   border: 3px solid rgb(0, 255, 149);;
   margin: 2px;
 }
@@ -54,7 +54,7 @@
 }
 
 button{
-  width: 300px;
+  width: 4em;
   margin: 2px;
   border-radius: 16px;
   border-color: rgb(248, 127, 248);
