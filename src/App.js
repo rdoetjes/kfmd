@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './App.css';
 import Topic from './Topic.js'
 import {celebs} from './celebs.js'
+
 import mqtt from 'mqtt'
 
 class App extends Component {
@@ -14,7 +15,7 @@ class App extends Component {
       isDisabled: false,
       statusBar: "DISCONNECTED",
       animate: "none"
-    }    
+    }
   }
 
   componentDidMount(){
@@ -25,14 +26,17 @@ class App extends Component {
     }
 
     //todo make a wss (ssl)
+    //Connect to Mosquitto broker's WebSocket 
     this.client = mqtt.connect("ws://192.168.178.77:9001", options);
 
+    //Connect event handling
     this.client.on("connect", ()   => {
       this.setState({statusBar: "CONNECTED"});
       this.client.subscribe("kfmd_pub");
       this.setState({statusBar: "READY"});
     });
 
+    //Message event handling
     this.client.on("message", (topic, message) => {
       this.callEvent(message.toString());
     });
@@ -43,36 +47,43 @@ class App extends Component {
     this.client.end();
   }
 
-  kill(){
-    this.setState({animate: "up"});
-    this.playMe("gunshot.mp3", celebs, this.state.alreadyHad);
+  //What action to perfotm with this celeb.
+  performAction(Action){
+    switch(Action.toUpperCase()){
+
+      case "KILL":
+          this.setState({animate: "up"});
+          this.playMe("gunshot.mp3", celebs, this.state.alreadyHad);
+          break;
+
+      case "FUCK":
+        this.setState({animate: "left"});
+        this.playMe("orgasm.mp3", celebs, this.state.alreadyHad);
+        break;
+
+      case "MARRY":
+        this.setState({animate: "right"});
+        this.playMe("sucker.mp3", celebs, this.state.alreadyHad);
+        break;
+        
+      case "DUMP":
+        this.setState({animate: "down"});
+        this.playMe("dumped.mp3", celebs, this.state.alreadyHad);
+        break;
+    }
+
+    //wait for animation to finish before showing a new celeb to judge
     setTimeout(() => this.getNewCelebAfterMove(), 2000);
   }
 
-  fuck(){
-    this.setState({animate: "left"});
-    this.playMe("orgasm.mp3", celebs, this.state.alreadyHad);
-    setTimeout(() => this.getNewCelebAfterMove(), 2000);
-  }
-
-  dump(){
-    this.setState({animate: "down"});
-    this.playMe("dumped.mp3", celebs, this.state.alreadyHad);
-    setTimeout(() => this.getNewCelebAfterMove(), 2000);
-  }
-
-  marry(){
-    this.setState({animate: "right"});
-    this.playMe("sucker.mp3", celebs, this.state.alreadyHad);
-    setTimeout(() => this.getNewCelebAfterMove(), 2000);  
-  }
-
+  //Pickk a new celebrity after we've done moving the picture to the selected action and back in the center.
   getNewCelebAfterMove(){
     this.setState({animate: "none"});
     let tempCeleb = this.getCeleb(celebs, this.state.alreadyHad);
     this.setState({newCeleb: tempCeleb}); 
   }
 
+  //Event handling from the broker message
   callEvent(brokerMessage){
     if (this.state.isDisabled){
       this.setState({statusBar: "GAME OVER"})
@@ -82,19 +93,19 @@ class App extends Component {
     var message= brokerMessage.toUpperCase();
 
     if (message === "UP" || message ==="U" || message === "K" || message === "KILL")
-      this.kill();
+      this.performAction("KILL");
 
-    if (message === "DOWN" || message ==="D" || message === "DUMP"){
-      this.dump();
-    }
-    
     if (message === "LEFT" || message ==="L" || message === "F" || message === "FUCK")
-      this.fuck();
+      this.performAction("FUCK");
     
     if (message === "RIGHT" || message ==="R" || message === "M" || message === "MARRY")
-    this.marry()
+      this.performAction("MARRY");
+
+    if (message === "DOWN" || message ==="D" || message === "DUMP")
+      this.performAction("DUMP");
   } 
 
+  //Get a celeb that we have not already seen. When we have seen them all show the done.jpeg and set game to game over.
   getCeleb(celebs) {  
     if (this.state.alreadyHad && !this.state.alreadyHad.includes(this.state.newCeleb))
       this.state.alreadyHad.push(this.state.newCeleb)
@@ -114,35 +125,35 @@ class App extends Component {
     return tempCeleb
   }
 
-  playMe(soundFile, celebs, alreadyHad){
+  //Play the sound that is associated with the action. BEWARE the user has to have interacted with the DOM by clicking on the screen
+  playMe(soundFile){
     let sound = new Audio(process.env.PUBLIC_URL + '/' +soundFile);
     sound.muted = false;
     sound.play();
-    //let tempCeleb = this.getCeleb(celebs, alreadyHad);
-    //this.setState({newCeleb: tempCeleb});
   }
 
+  //Render the very simply 4 button and picture UI
   render(){    
   return (
       <div className='KFMD'>
         <div className='grid'>
           <div className='section'></div>
           <div className='section'>
-            <Topic topic="KILL" image="kill.png" disabled={this.state.isDisabled} onClick={() => {this.kill()}}/>
+            <Topic topic="KILL" image="kill.png" disabled={this.state.isDisabled} onClick={() => {this.performAction("KILL")}}/>
           </div>
           <div className='section'></div>
 
           <div className='section'>
-            <Topic topic="FUCK!" image="fuck.png" disabled={this.state.isDisabled} onClick={() => {this.fuck()}}/>
+            <Topic topic="FUCK!" image="fuck.png" disabled={this.state.isDisabled} onClick={() => {this.performAction("FUCK")}}/>
           </div>
           <div className='section' id={this.state.animate}><img id="idiot" className="box" alt="kill" src={process.env.PUBLIC_URL + "/celebs/" + this.state.newCeleb} /> </div>
           <div className='section'>
-            <Topic topic="MARRY" image="marry.png" disabled={this.state.isDisabled} onClick={() => {this.marry()}} />
+            <Topic topic="MARRY" image="marry.png" disabled={this.state.isDisabled} onClick={() => {this.performAction("MARRY")}} />
           </div>
 
           <div className='section'></div>
           <div className='section'>
-            <Topic topic="DUMP" image="dump.png" disabled={this.state.isDisabled} onClick={() => {this.dump()}}/>
+            <Topic topic="DUMP" image="dump.png" disabled={this.state.isDisabled} onClick={() => {this.performAction("DUMP")}}/>
           </div>
           <div className='section'></div>
           <div>STATUS: {this.state.statusBar}</div>
