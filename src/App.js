@@ -52,9 +52,9 @@ class App extends Component {
     switch(Action.toUpperCase()){
 
       case "KILL":
-          this.setState({animate: "up"});
-          this.playMe("gunshot.mp3", celebs, this.state.alreadyHad);
-          break;
+        this.setState({animate: "up"});
+        this.playMe("gunshot.mp3", celebs, this.state.alreadyHad);
+        break;
 
       case "FUCK":
         this.setState({animate: "left"});
